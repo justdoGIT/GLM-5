@@ -43,7 +43,7 @@ This is a **documentation-only** master skill.
 
 | Skill | Purpose | Link |
 |---|---|---|
-| `glm-image-gen` | Text-to-image generation | https://github.com/zai-org/GLM-Image/tree/main/skills/glm-image-gen |
+| `glm-image-generation` | Text-to-image generation | https://github.com/zai-org/GLM-Image/tree/main/skills/glm-image-generation |
 
 ### GLM-V
 
@@ -77,11 +77,21 @@ npx clawhub@latest install glmv-caption
 npx clawhub@latest install glm-image-generation
 ```
 
-You can also install multiple skills at once:
+Clawhub accepts one skill per `install` command. To install multiple skills,
+run one command per skill. This shell loop stops on the first failed install
+(for example, if the registry is rate-limited):
 
 ```bash
-npx clawhub@latest install glmocr glmocr-table glmocr-formula glmocr-handwriting glm-image-generation glmv-caption glmv-prompt-gen glmv-resume-screen glmv-grounding glmv-doc-based-writing glmv-pdf-to-ppt glmv-pdf-to-web glmv-prd-to-app glmv-web-replication
+for skill in \
+  glmocr glmocr-table glmocr-formula glmocr-handwriting \
+  glm-image-generation glmv-caption glmv-prompt-gen glmv-resume-screen \
+  glmv-grounding glmv-doc-based-writing glmv-pdf-to-ppt glmv-pdf-to-web \
+  glmv-prd-to-app glmv-web-replication; do
+  npx clawhub@latest install "$skill" || break
+done
 ```
+
+Clawhub 的每条 `install` 命令只接受一个技能；以上循环逐个安装，并在首次失败时停止。
 
 ### Method B: If Clawhub is rate-limited
 
@@ -119,7 +129,7 @@ Most GLM skills require the environment variable `ZHIPU_API_KEY`. This master sk
 > **Security best practices:**
 > - Create a **limited-scope** API key with only the permissions needed for the skills you plan to use.
 > - Store the key in environment variables only — **never hardcode** it in source files or commit it to version control.
-> - Add `ZHIPU_API_KEY` to your `.gitignore` if storing it in a `.env` file.
+> - If storing the key in a `.env` file, add the **file path** `.env` to `.gitignore`, not the variable name `ZHIPU_API_KEY`. Git ignores files by path, not by their contents. Ignoring a file does not untrack one already committed; if a key was committed, revoke it and remove the secret from the repository.
 > - Rotate the key periodically and revoke unused keys at https://bigmodel.cn/usercenter/proj-mgmt/apikeys.
 
 Get API key: https://bigmodel.cn/usercenter/proj-mgmt/apikeys
