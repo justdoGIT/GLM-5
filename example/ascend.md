@@ -1,4 +1,4 @@
-# Using Ascend NPU to Deploy GLM-5.2
+# Using Ascend NPU to Deploy GLM-5.3 and GLM-5.2
 
 Currently, the Ascend platform already supports the deployment of GLM-5.2. Efficient Inference Optimization for the GLM-5.2 Model on the Ascend Platform focuses on the following key techniques:
 
